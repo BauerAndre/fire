@@ -7,20 +7,20 @@ function App() {
   const [autor, setAutor] = useState("");
 
   async function handleAdd() {
-    await firebase
-      .firestore()
-      .collection("posts")
-      .doc("12345")
-      .set({
-        titulo: titulo,
-        autor: autor,
-      })
-      .then(() => {
-        console.log("dados cadastrados com sucesso");
-      })
-      .catch((error) => {
-        console.log("Gerou algum erro: " + error());
-      });
+    // await firebase
+    //   .firestore()
+    //   .collection("posts")
+    //   .doc("12345")
+    //   .set({
+    //     titulo: titulo,
+    //     autor: autor,
+    //   })
+    //   .then(() => {
+    //     console.log("dados cadastrados com sucesso");
+    //   })
+    //   .catch((error) => {
+    //     console.log("Gerou algum erro: " + error());
+    //   });
   }
 
   return (
