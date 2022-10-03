@@ -1,5 +1,7 @@
 import { useState } from "react";
-import firebase from "./firebaseConnection";
+// import firebase from "./firebaseConnection";
+import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import db from "./firebaseConnection";
 import "./style.css";
 
 function App() {
@@ -21,6 +23,19 @@ function App() {
     //   .catch((error) => {
     //     console.log("Gerou algum erro: " + error());
     //   });
+
+    await addDoc(collection(db, "posts"), {
+      titulo: titulo,
+      autor: autor,
+    })
+      .then(() => {
+        console.log("CADASTRADO COM SUCESSO");
+        setAutor("");
+        setTitulo("");
+      })
+      .catch((error) => {
+        console.log("ERRO" + error);
+      });
   }
 
   return (
