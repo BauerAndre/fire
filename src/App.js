@@ -11,7 +11,8 @@ import {
   deleteDoc,
   onSnapshot,
 } from "firebase/firestore";
-import db from "./firebaseConnection";
+import { db, auth } from "./firebaseConnection";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import "./style.css";
 import { async } from "@firebase/util";
 
@@ -19,6 +20,9 @@ function App() {
   const [titulo, setTitulo] = useState("");
   const [autor, setAutor] = useState("");
   const [idPost, setIdPost] = useState("");
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
   const [posts, setPosts] = useState([]);
 
@@ -123,11 +127,46 @@ function App() {
     });
   }
 
+  async function novoUsuario() {
+    await createUserWithEmailAndPassword(auth, email, senha)
+      .then((value) => {
+        console.log("CADSATRADO COM SUCESSO!");
+        setEmail("");
+        setSenha("");
+      })
+      .catch(() => {
+        console.log("ERROR AO CADASTRAR");
+      });
+  }
+
   return (
     <div>
       <h1>ReactJS + Firebase :)</h1>
 
       <div className="container">
+        <h2>Usuarios</h2>
+        <label>Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Digite seu email"
+        />
+        <label>Senha</label>
+        <input
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          placeholder="Digite sua senha"
+          type="password"
+        />{" "}
+        <br />
+        <button onClick={novoUsuario}>Cadastrar</button>
+      </div>
+      <br />
+      <br />
+      <hr />
+      <div className="container">
+        <h2>POSTS</h2>
         <label>ID do Post:</label>
         <input
           type="text"
