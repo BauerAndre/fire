@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import firebase from "./firebaseConnection";
 import {
   doc,
@@ -7,9 +7,9 @@ import {
   addDoc,
   getDoc,
   getDocs,
-  onSnapshot,
   updateDoc,
   deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import db from "./firebaseConnection";
 import "./style.css";
@@ -21,6 +21,23 @@ function App() {
   const [idPost, setIdPost] = useState("");
 
   const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    async function loadPosts() {
+      const unsub = onSnapshot(collection(db, "posts"), (snapshot) => {
+        let listaPost = [];
+        snapshot.forEach((doc) => {
+          listaPost.push({
+            id: doc.id,
+            titulo: doc.data().titulo,
+            autor: doc.data().autor,
+          });
+        });
+        setPosts(listaPost);
+      });
+    }
+    loadPosts();
+  }, []);
 
   async function handleAdd() {
     // await firebase
