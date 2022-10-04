@@ -134,7 +134,12 @@ function App() {
         setEmail("");
         setSenha("");
       })
-      .catch(() => {
+      .catch((error) => {
+        if (error.code === "auth/weak-password") {
+          alert("Senha muito fraca.");
+        } else if (error.code === "auth/email-already-in-use") {
+          alert("Email ja existe!");
+        }
         console.log("ERROR AO CADASTRAR");
       });
   }
