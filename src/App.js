@@ -15,6 +15,7 @@ import { db, auth } from "./firebaseConnection";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import "./style.css";
 import { async } from "@firebase/util";
@@ -26,6 +27,9 @@ function App() {
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  const [user, setUser] = useState(false);
+  const [userDetail, setUserDetail] = useState({});
 
   const [posts, setPosts] = useState([]);
 
@@ -152,6 +156,13 @@ function App() {
       .then((value) => {
         console.log("USER LOGADO COM SUCESSO");
         console.log(value.user);
+
+        setUserDetail({
+          uid: value.user.uid,
+          email: value.user.email,
+        });
+        setUser(true);
+
         setEmail("");
         setSenha("");
       })
@@ -160,9 +171,29 @@ function App() {
       });
   }
 
+  async function fazerLogout() {
+    await signOut(auth);
+    setUser(false);
+    setUserDetail({});
+  }
+
   return (
     <div>
       <h1>ReactJS + Firebase :)</h1>
+
+      {user && (
+        <div>
+          <strong>Seja bem-vindo(a) Voce esta logado!</strong>
+          <br />
+          <span>
+            ID: {userDetail.uid} - Email: {userDetail.email}
+          </span>
+          <br />
+          <button onClick={fazerLogout}>Sair da conta</button>
+          <br />
+          <br />
+        </div>
+      )}
 
       <div className="container">
         <h2>Usuarios</h2>
