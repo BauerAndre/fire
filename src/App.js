@@ -12,7 +12,10 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db, auth } from "./firebaseConnection";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import "./style.css";
 import { async } from "@firebase/util";
 
@@ -144,6 +147,19 @@ function App() {
       });
   }
 
+  async function logarUsuario() {
+    await signInWithEmailAndPassword(auth, email, senha)
+      .then((value) => {
+        console.log("USER LOGADO COM SUCESSO");
+        console.log(value.user);
+        setEmail("");
+        setSenha("");
+      })
+      .catch(() => {
+        console.log("ERRO AO FAZER O LOGIN");
+      });
+  }
+
   return (
     <div>
       <h1>ReactJS + Firebase :)</h1>
@@ -166,6 +182,7 @@ function App() {
         />{" "}
         <br />
         <button onClick={novoUsuario}>Cadastrar</button>
+        <button onClick={logarUsuario}>Fazer login</button>
       </div>
       <br />
       <br />
