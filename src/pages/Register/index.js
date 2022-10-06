@@ -39,7 +39,6 @@ export default function Register() {
         />
 
         <input
-          autoComplete={false}
           type="password"
           placeholder="************"
           value={password}

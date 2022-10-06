@@ -43,7 +43,6 @@ export default function Home() {
         />
 
         <input
-          autoComplete={false}
           type="password"
           placeholder="************"
           value={password}
