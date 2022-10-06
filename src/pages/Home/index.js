@@ -5,9 +5,13 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConnection";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
+import { useNavigate } from "react-router-dom";
+
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -15,6 +19,7 @@ export default function Home() {
       await signInWithEmailAndPassword(auth, email, password)
         .then(() => {
           //navegar para admin
+          navigate("/admin", { replace: true });
         })
         .catch(() => {
           console.log("ERRO AO FAZER O LOGIN");
