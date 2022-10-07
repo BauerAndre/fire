@@ -1,5 +1,8 @@
+import { async } from "@firebase/util";
 import { useState } from "react";
 import "./admin.css";
+import { auth } from "../../firebaseConnection";
+import { signOut } from "firebase/auth";
 
 export default function Admin() {
   const [tarefaInput, setTarefaInput] = useState("");
@@ -10,9 +13,13 @@ export default function Admin() {
     alert("clicou");
   }
 
+  async function handleLogout() {
+    await signOut(auth);
+  }
+
   return (
     <div className="admin-container">
-      <h1>Minhas tarfas</h1>
+      <h1>Minhas tarefas</h1>
 
       <form className="form" onSubmit={handleRegister}>
         <textarea
@@ -33,7 +40,9 @@ export default function Admin() {
         </div>
       </article>
 
-      <button className="btn-logout">Sair</button>
+      <button className="btn-logout" onClick={handleLogout}>
+        Sair
+      </button>
     </div>
   );
 }
