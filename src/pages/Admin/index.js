@@ -17,6 +17,7 @@ import {
 export default function Admin() {
   const [tarefaInput, setTarefaInput] = useState("");
   const [user, setUser] = useState({});
+  const [edit, setEdit] = useState({});
 
   const [tarefas, setTarefas] = useState([]);
 
@@ -82,6 +83,11 @@ export default function Admin() {
     await deleteDoc(docRef);
   }
 
+  function editTarefa(item) {
+    setTarefaInput(item.tarefa);
+    setEdit(item);
+  }
+
   return (
     <div className="admin-container">
       <h1>Minhas tarefas</h1>
@@ -92,16 +98,26 @@ export default function Admin() {
           value={tarefaInput}
           onChange={(e) => setTarefaInput(e.target.value)}
         ></textarea>
-        <button className="btn-register" type="submit">
-          Registrar tarefa
-        </button>
+        {Object.keys(edit).length > 0 ? (
+          <button
+            className="btn-register"
+            style={{ backgroundColor: "#6add39" }}
+            type="submit"
+          >
+            Atualizar tarefa
+          </button>
+        ) : (
+          <button className="btn-register" type="submit">
+            Registrar tarefa
+          </button>
+        )}
       </form>
 
       {tarefas.map((item) => (
         <article key={item.id} className="list">
           <p>{item.tarefa}</p>
           <div>
-            <button>Editar</button>
+            <button onClick={() => editTarefa(item)}>Editar</button>
             <button
               onClick={() => deleteTarefa(item.id)}
               className="btn-delete"
