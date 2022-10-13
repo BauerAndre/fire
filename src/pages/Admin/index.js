@@ -12,6 +12,7 @@ import {
   where,
   doc,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 export default function Admin() {
@@ -60,6 +61,12 @@ export default function Admin() {
       alert("Digite sua tarefa...");
       return;
     }
+
+    if (edit?.id) {
+      handleUpdateTarefa();
+      return;
+    }
+
     await addDoc(collection(db, "tarefas"), {
       tarefa: tarefaInput,
       created: new Date(),
@@ -86,6 +93,23 @@ export default function Admin() {
   function editTarefa(item) {
     setTarefaInput(item.tarefa);
     setEdit(item);
+  }
+
+  async function handleUpdateTarefa() {
+    const docRef = doc(db, "tarefas", edit?.id);
+    await updateDoc(docRef, {
+      tarefa: tarefaInput,
+    })
+      .then(() => {
+        console.log("tarefa atualizada");
+        setTarefaInput("");
+        setEdit({});
+      })
+      .catch(() => {
+        console.log("ERRO AO ATUALIZAR");
+        setTarefaInput("");
+        setEdit({});
+      });
   }
 
   return (
